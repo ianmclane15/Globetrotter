@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Globetrotter</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Saved Flights</string>
+    <string name="title_notifications">Search</string>
+    <string name="title_activity_search">Search</string>
+</resources>
