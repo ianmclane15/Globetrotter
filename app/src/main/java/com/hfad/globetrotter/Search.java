@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.widget.DatePicker;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
@@ -24,6 +26,11 @@ public class Search extends AppCompatActivity {
     EditText editTextDateDepart;
     Button buttonTimePicker;
     EditText editTextDateReturn;
+    SeekBar searchbar;
+    TextView eco;
+    TextView pe;
+    TextView business;
+    TextView fc;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
 
@@ -59,56 +66,112 @@ public class Search extends AppCompatActivity {
 
         editTextDateDepart = findViewById(R.id.editText_search_departdate);
         editTextDateReturn = findViewById(R.id.editText_search_returndate);
+        searchbar = findViewById(R.id.seekBar_search);
+        eco = findViewById(R.id.textView_search_eco);
+        pe = findViewById(R.id.textView_search_pe);
+        business = findViewById(R.id.textView_search_business);
+        fc = findViewById(R.id.textView_search_fc);
         setUpCalendar();
+        setOnSeekBarListener();
 
-        }
+    }
 
-    private void setUpCalendar() {
-        //sets up calender for departure
-        final Calendar myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+    private void setOnSeekBarListener() {
+        searchbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.US);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress == 0) {
+                    pe.setVisibility(View.INVISIBLE);
+                    business.setVisibility(View.INVISIBLE);
+                    fc.setVisibility(View.INVISIBLE);
+                    eco.setVisibility(View.VISIBLE);
 
-                editTextDateDepart.setText(simpleDateFormat.format(myCalendar.getTime()));
+                }
+
+                if (progress == 1) {
+                    eco.setVisibility(View.INVISIBLE);
+                    business.setVisibility(View.INVISIBLE);
+                    fc.setVisibility(View.INVISIBLE);
+                    pe.setVisibility(View.VISIBLE);
+                }
+
+                if (progress == 2) {
+                    eco.setVisibility(View.INVISIBLE);
+                    pe.setVisibility(View.INVISIBLE);
+                    fc.setVisibility(View.INVISIBLE);
+                    business.setVisibility(View.VISIBLE);
+                }
+
+                if (progress == 3) {
+                    eco.setVisibility(View.INVISIBLE);
+                    pe.setVisibility(View.INVISIBLE);
+                    business.setVisibility(View.INVISIBLE);
+                    fc.setVisibility(View.VISIBLE);
+                }
 
             }
-        };
-        editTextDateDepart.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
-            public void onClick(View v) {
-                new DatePickerDialog(Search.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
+    }
 
-        //sets up calendar for return date
-        final Calendar myCalendar2 = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendar2.set(Calendar.YEAR, year);
-                myCalendar2.set(Calendar.MONTH, month);
-                myCalendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.US);
 
-                editTextDateReturn.setText(simpleDateFormat.format(myCalendar2.getTime()));
+        private void setUpCalendar () {
+            //sets up calender for departure
+            final Calendar myCalendar = Calendar.getInstance();
+            final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    myCalendar.set(Calendar.YEAR, year);
+                    myCalendar.set(Calendar.MONTH, month);
+                    myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    String myFormat = "MM/dd/yy";
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.US);
 
-            }
-        };
-        editTextDateReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(Search.this, date2, myCalendar2.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
+                    editTextDateDepart.setText(simpleDateFormat.format(myCalendar.getTime()));
+
+                }
+            };
+            editTextDateDepart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new DatePickerDialog(Search.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+            });
+
+            //sets up calendar for return date
+            final Calendar myCalendar2 = Calendar.getInstance();
+            final DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    myCalendar2.set(Calendar.YEAR, year);
+                    myCalendar2.set(Calendar.MONTH, month);
+                    myCalendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    String myFormat = "MM/dd/yy";
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.US);
+
+                    editTextDateReturn.setText(simpleDateFormat.format(myCalendar2.getTime()));
+
+                }
+            };
+            editTextDateReturn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new DatePickerDialog(Search.this, date2, myCalendar2.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+           });
+
 
     }
 }
