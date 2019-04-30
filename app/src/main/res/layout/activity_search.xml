@@ -15,13 +15,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/title_home"
+        android:text="Search for flights!"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.013"
-        tools:text="Search for cheap flights!" />
+        app:layout_constraintVertical_bias="0.013" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
