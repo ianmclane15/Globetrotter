@@ -7,12 +7,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.widget.DatePicker;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -32,6 +34,10 @@ public class Search extends AppCompatActivity {
     TextView business;
     TextView fc;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    String[] numbers =  {"0","1","2","3","4","5","6","7","8","9"};
+    Spinner adults;
+    Spinner children;
+    Spinner infants;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -73,6 +79,26 @@ public class Search extends AppCompatActivity {
         fc = findViewById(R.id.textView_search_fc);
         setUpCalendar();
         setOnSeekBarListener();
+
+        adults = findViewById(R.id.spinner_search_adults);
+        children = findViewById(R.id.spinner_search_children);
+        infants = findViewById(R.id.spinner_search_infants);
+
+        ArrayAdapter<CharSequence> adapterAdults = ArrayAdapter.createFromResource(this, R.array.numbers_array, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapterChildren = ArrayAdapter.createFromResource(this, R.array.numbers_array, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapterInfants = ArrayAdapter.createFromResource(this, R.array.numbers_array, android.R.layout.simple_spinner_dropdown_item);
+
+        adapterAdults.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterChildren.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterInfants.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        adults.setAdapter(adapterAdults);
+        children.setAdapter(adapterChildren);
+        infants.setAdapter(adapterInfants);
+
+
+
+
 
     }
 
