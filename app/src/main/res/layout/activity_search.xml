@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFF2"
     tools:context=".Search">
 
     <TextView
@@ -161,6 +162,41 @@
         app:layout_constraintHorizontal_bias="0.812"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBar_search" />
+
+    <RadioGroup
+        android:id="@+id/radioClass"
+        android:layout_width="102dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.56">
+
+        <RadioButton
+            android:id="@+id/radioEco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Economy" />
+
+        <RadioButton
+            android:id="@+id/radioBiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Business" />
+
+        <RadioButton
+            android:id="@+id/radioFirst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First Class" />
+
+    </RadioGroup>
 
     <EditText
         android:id="@+id/editText"

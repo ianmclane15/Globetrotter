@@ -11,12 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.widget.DatePicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,10 +34,14 @@ public class Search extends AppCompatActivity {
     TextView business;
     TextView fc;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    String[] numbers =  {"0","1","2","3","4","5","6","7","8","9"};
     Spinner adults;
     Spinner children;
     Spinner infants;
+
+    private RadioGroup radioClassGroup;
+    private RadioButton radioEcoButton;
+    private RadioButton radioBizButton;
+    private RadioButton radioFirstButton;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -53,7 +57,7 @@ public class Search extends AppCompatActivity {
                 case R.id.navigation_flights:
                     mTextMessage.setText(R.string.title_dashboard);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_search:
                     mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
@@ -95,6 +99,12 @@ public class Search extends AppCompatActivity {
         adults.setAdapter(adapterAdults);
         children.setAdapter(adapterChildren);
         infants.setAdapter(adapterInfants);
+
+        radioClassGroup = findViewById(R.id.radioClass);
+        radioEcoButton = findViewById(R.id.radioEco);
+        radioBizButton = findViewById(R.id.radioBiz);
+        radioFirstButton = findViewById(R.id.radioFirst);
+
 
 
 

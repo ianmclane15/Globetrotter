@@ -1,6 +1,5 @@
 package com.hfad.globetrotter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,11 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_flights:
                     mTextMessage.setText(R.string.title_dashboard);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_search:
                     mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
