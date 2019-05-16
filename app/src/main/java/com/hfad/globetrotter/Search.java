@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.app.DatePickerDialog;
@@ -38,10 +39,15 @@ public class Search extends AppCompatActivity {
     Spinner children;
     Spinner infants;
 
+    AutoCompleteTextView origin;
+    AutoCompleteTextView destination;
+
     private RadioGroup radioClassGroup;
     private RadioButton radioEcoButton;
     private RadioButton radioBizButton;
     private RadioButton radioFirstButton;
+
+    String airports;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -105,10 +111,8 @@ public class Search extends AppCompatActivity {
         radioBizButton = findViewById(R.id.radioBiz);
         radioFirstButton = findViewById(R.id.radioFirst);
 
-
-
-
-
+        origin = findViewById(R.id.actv_search_origin);
+        destination = findViewById(R.id.actv_search_destination);
 
     }
 
