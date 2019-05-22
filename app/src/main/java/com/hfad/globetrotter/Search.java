@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,7 +20,16 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.FileReader;
+import java.io.BufferedReader;
+
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -47,7 +57,10 @@ public class Search extends AppCompatActivity {
     private RadioButton radioBizButton;
     private RadioButton radioFirstButton;
 
+    public static final String TAG = "Search";
+
     String airports;
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -114,42 +127,72 @@ public class Search extends AppCompatActivity {
         origin = findViewById(R.id.actv_search_origin);
         destination = findViewById(R.id.actv_search_destination);
 
+        loadFlights();
+
+    }
+
+    private void loadFlights() {
+        String jsonString = readTextFile(getResources().openRawResource(R.raw.airports));
+        Gson gson = new Gson();
+        Airport [] airports = gson.fromJson(jsonString, Airport [].class);
+        List<Airport> questionList = Arrays.asList(airports);
+        Log.d(TAG, "onCreate: " + questionList.toString());
+
+       //Airport[] = new Airport(airportList);
+    }
+
+    private String readTextFile(InputStream inputStream) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        byte buf[] = new byte[1024];
+        int len;
+        try {
+            while ((len = inputStream.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+
+        }
+        return outputStream.toString();
     }
 
     private void setOnSeekBarListener() {
-        searchbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress == 0) {
-                    pe.setVisibility(View.INVISIBLE);
-                    business.setVisibility(View.INVISIBLE);
-                    fc.setVisibility(View.INVISIBLE);
-                    eco.setVisibility(View.VISIBLE);
+            searchbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (progress == 0) {
+                        pe.setVisibility(View.INVISIBLE);
+                        business.setVisibility(View.INVISIBLE);
+                        fc.setVisibility(View.INVISIBLE);
+                        eco.setVisibility(View.VISIBLE);
+
+                    }
+
+                    if (progress == 1) {
+                        eco.setVisibility(View.INVISIBLE);
+                        business.setVisibility(View.INVISIBLE);
+                        fc.setVisibility(View.INVISIBLE);
+                        pe.setVisibility(View.VISIBLE);
+                    }
+
+                    if (progress == 2) {
+                        eco.setVisibility(View.INVISIBLE);
+                        pe.setVisibility(View.INVISIBLE);
+                        fc.setVisibility(View.INVISIBLE);
+                        business.setVisibility(View.VISIBLE);
+                    }
+
+                    if (progress == 3) {
+                        eco.setVisibility(View.INVISIBLE);
+                        pe.setVisibility(View.INVISIBLE);
+                        business.setVisibility(View.INVISIBLE);
+                        fc.setVisibility(View.VISIBLE);
+                    }
 
                 }
 
-                if (progress == 1) {
-                    eco.setVisibility(View.INVISIBLE);
-                    business.setVisibility(View.INVISIBLE);
-                    fc.setVisibility(View.INVISIBLE);
-                    pe.setVisibility(View.VISIBLE);
-                }
-
-                if (progress == 2) {
-                    eco.setVisibility(View.INVISIBLE);
-                    pe.setVisibility(View.INVISIBLE);
-                    fc.setVisibility(View.INVISIBLE);
-                    business.setVisibility(View.VISIBLE);
-                }
-
-                if (progress == 3) {
-                    eco.setVisibility(View.INVISIBLE);
-                    pe.setVisibility(View.INVISIBLE);
-                    business.setVisibility(View.INVISIBLE);
-                    fc.setVisibility(View.VISIBLE);
-                }
-
-            }
 
 
             @Override
