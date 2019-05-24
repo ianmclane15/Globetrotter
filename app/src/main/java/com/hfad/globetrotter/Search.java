@@ -33,11 +33,18 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class Search extends AppCompatActivity {
 
     private EditText mTextMessage;
     EditText editTextDateDepart;
     Button buttonTimePicker;
+    Button buttonSearchFlights;
     EditText editTextDateReturn;
     SeekBar searchbar;
     TextView eco;
@@ -89,23 +96,15 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        wireWidgets();
+
+       BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
-        editTextDateDepart = findViewById(R.id.editText_search_departdate);
-        editTextDateReturn = findViewById(R.id.editText_search_returndate);
-        searchbar = findViewById(R.id.seekBar_search);
-        eco = findViewById(R.id.textView_search_eco);
-        pe = findViewById(R.id.textView_search_pe);
-        business = findViewById(R.id.textView_search_business);
-        fc = findViewById(R.id.textView_search_fc);
         setUpCalendar();
         setOnSeekBarListener();
 
-        adults = findViewById(R.id.spinner_search_adults);
-        children = findViewById(R.id.spinner_search_children);
-        infants = findViewById(R.id.spinner_search_infants);
 
         ArrayAdapter<CharSequence> adapterAdults = ArrayAdapter.createFromResource(this, R.array.numbers_array, android.R.layout.simple_spinner_dropdown_item);
         ArrayAdapter<CharSequence> adapterChildren = ArrayAdapter.createFromResource(this, R.array.numbers_array, android.R.layout.simple_spinner_dropdown_item);
@@ -119,16 +118,37 @@ public class Search extends AppCompatActivity {
         children.setAdapter(adapterChildren);
         infants.setAdapter(adapterInfants);
 
+
+
+        buttonSearchFlights.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchFlights();
+            }
+        });
+
+        loadFlights();
+
+    }
+
+    private void wireWidgets() {
+        editTextDateDepart = findViewById(R.id.editText_search_departdate);
+        editTextDateReturn = findViewById(R.id.editText_search_returndate);
+        searchbar = findViewById(R.id.seekBar_search);
+        eco = findViewById(R.id.textView_search_eco);
+        pe = findViewById(R.id.textView_search_pe);
+        business = findViewById(R.id.textView_search_business);
+        fc = findViewById(R.id.textView_search_fc);
+        adults = findViewById(R.id.spinner_search_adults);
+        children = findViewById(R.id.spinner_search_children);
+        infants = findViewById(R.id.spinner_search_infants);
+        buttonSearchFlights = findViewById(R.id.button_search_searchFlights);
         radioClassGroup = findViewById(R.id.radioClass);
         radioEcoButton = findViewById(R.id.radioEco);
         radioBizButton = findViewById(R.id.radioBiz);
         radioFirstButton = findViewById(R.id.radioFirst);
-
         origin = findViewById(R.id.actv_search_origin);
         destination = findViewById(R.id.actv_search_destination);
-
-        loadFlights();
-
     }
 
     private void loadFlights() {
@@ -157,6 +177,53 @@ public class Search extends AppCompatActivity {
         }
         return outputStream.toString();
     }
+
+    private void searchFlights() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        FlightService service = retrofit.create(FlightService.class);
+
+        Call<CarrierResponse> flightResponseCall = service.getCarrier("US", "USD", "en-US", origin.getText().toString()+ "-sky", destination.getText().toString()+ "-sky", editTextDateDepart.getText().toString(), editTextDateReturn.getText().toString());
+        flightResponseCall.enqueue(new Callback<CarrierResponse>() {
+            @Override
+            public void onResponse(Call<CarrierResponse> call, Response<CarrierResponse> response) {
+                List<Carrier> carriers = response.body().getCarriers();
+                Log.d("ENQUEUE", "onResponse: " + carriers);
+            }
+
+
+            @Override
+            public void onFailure(Call<CarrierResponse> call, Throwable t) {
+                Log.d("ENQUEUE", "onFailre " + t.getMessage());
+
+
+            }
+        });
+
+        FlightPriceService serve = retrofit.create(FlightPriceService.class);
+        Call<QuoteResponse> flightPriceResponseCall = serve.getQuote("US", "USD", "en-US", origin.getText().toString()+ "-sky", destination.getText().toString()+ "-sky", editTextDateDepart.getText().toString(), editTextDateReturn.getText().toString());
+        flightPriceResponseCall.enqueue(new Callback<QuoteResponse>() {
+            @Override
+            public void onResponse(Call<QuoteResponse> call, Response<QuoteResponse> response) {
+                List<Quote>  quote = response.body().getQuote();
+                Log.d("ENQUEUE", "onResponse: " + quote);
+            }
+
+
+            @Override
+            public void onFailure(Call<QuoteResponse> call, Throwable t) {
+                Log.d("ENQUEUE", "onFailre " + t.getMessage());
+
+
+            }
+        });
+
+    }
+
 
     private void setOnSeekBarListener() {
             searchbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -217,7 +284,7 @@ public class Search extends AppCompatActivity {
                     myCalendar.set(Calendar.YEAR, year);
                     myCalendar.set(Calendar.MONTH, month);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    String myFormat = "MM/dd/yy";
+                    String myFormat = "yyyy-MM-dd";
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.US);
 
                     editTextDateDepart.setText(simpleDateFormat.format(myCalendar.getTime()));
@@ -240,7 +307,7 @@ public class Search extends AppCompatActivity {
                     myCalendar2.set(Calendar.YEAR, year);
                     myCalendar2.set(Calendar.MONTH, month);
                     myCalendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    String myFormat = "MM/dd/yy";
+                    String myFormat = "yyyy-MM-dd";
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.US);
 
                     editTextDateReturn.setText(simpleDateFormat.format(myCalendar2.getTime()));
