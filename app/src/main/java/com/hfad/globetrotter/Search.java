@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import java.io.InputStream;
@@ -193,12 +194,16 @@ public class Search extends AppCompatActivity {
             public void onResponse(Call<CarrierResponse> call, Response<CarrierResponse> response) {
                 List<Carrier> carriers = response.body().getCarriers();
                 Log.d("ENQUEUE", "onResponse: " + carriers);
+                Intent intent = new Intent(Search.this, FlightListActivity.class);
+                intent.putExtra("carriers", carriers.toArray(new Carrier[carriers.size()]));
+
             }
 
 
             @Override
             public void onFailure(Call<CarrierResponse> call, Throwable t) {
                 Log.d("ENQUEUE", "onFailre " + t.getMessage());
+                Toast.makeText(Search.this, "Server was angry, try again!", Toast.LENGTH_SHORT).show();
 
 
             }

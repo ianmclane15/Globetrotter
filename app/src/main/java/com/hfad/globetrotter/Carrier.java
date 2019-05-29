@@ -1,6 +1,9 @@
 package com.hfad.globetrotter;
 
-public class Carrier {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Carrier implements Parcelable {
     private int CarrierId;
     private String Name;
 
@@ -27,5 +30,34 @@ public class Carrier {
                 ", name='" + Name + '\'' +
                 '}';
     }
+
+    protected Carrier(Parcel in) {
+        CarrierId = in.readInt();
+        Name = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(CarrierId);
+        dest.writeString(Name);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Carrier> CREATOR = new Parcelable.Creator<Carrier>() {
+        @Override
+        public Carrier createFromParcel(Parcel in) {
+            return new Carrier(in);
+        }
+
+        @Override
+        public Carrier[] newArray(int size) {
+            return new Carrier[size];
+        }
+    };
 }
 
